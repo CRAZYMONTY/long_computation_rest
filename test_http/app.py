@@ -24,7 +24,7 @@ def task(task_id):
     except ValueError as e:
         log.error(e)
         return 'WrongTaskIdFormat', 400
-    task: Task = task_dao.get_task(id)
+    task = task_dao.get_task(id)
     if task is None:
         return 'TaskDoesNotExist', 404
     if request.method == 'GET':
