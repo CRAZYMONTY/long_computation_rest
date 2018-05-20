@@ -1,8 +1,9 @@
 import uuid
 
 from flask import Flask, logging, request
-from test_http.worker import worker
-from test_http.model.task import Task, task_dao
+
+from model.utils import task_dao
+from test_http.model.task import Task
 
 app = Flask(__name__)
 log = logging.create_logger(app)
