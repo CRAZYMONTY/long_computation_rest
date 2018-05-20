@@ -1,61 +1,16 @@
 import uuid
-import pickle
-from test_http.worker import worker
-from contextlib import contextmanager
 
-
-@contextmanager
-def persist(self, filename='db.json'):
-    with open(filename, 'rb+') as f:
-        self.data = pickle.load(f)
-        yield
-        f.seek(0)
-        pickle.dump(self.data, file=f)
-
-
-class TaskStatus:
-    CREATED = 'CREATED'
-    RUNNING = 'RUNNING'
-    FAILED = 'FAILED'
-    DELETED = 'DELETED'
-    DONE = 'DONE'
+import test_http.worker.worker as worker
 
 
 class JobDefinition:
     IMAGE_RESIZE = 'IMAGE_RESIZE'
 
 
-class TaskDao:
-    def __init__(self):
-        self.data = {}
-
-    def get_task(self, id):
-        with persist(self):
-            return self.data.get(id)
-
-    def add_task(self, task):
-        with persist(self):
-            self.data[task.id] = task
-
-    def delete_task(self, id):
-        with persist(self):
-            if id not in self.data.keys():
-                return None
-            self.data.pop(id)
-            return id
-
-    def update_task(self, task):
-        with persist(self):
-            self.data[task.id] = task
-
-
-task_dao = TaskDao()
-
-
 class Task(object):
     def __init__(self,
                  id,
-                 status=TaskStatus.CREATED,
+                 status='CREATED',
                  job_definition=JobDefinition.IMAGE_RESIZE,
                  job_result=None,
                  error=None):
@@ -70,7 +25,7 @@ class Task(object):
         return Task(id=uuid.uuid4())
 
     def run_task(self):
-        self.status = TaskStatus.RUNNING
+        self.status = 'RUNNING'
         return worker.image_resize.delay(self.id)
 
     def update_status(self, status):

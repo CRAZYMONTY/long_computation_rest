@@ -2,7 +2,7 @@ import uuid
 
 from celery import Celery
 from time import sleep
-from test_http.model.task import task_dao, TaskStatus
+from test_http.model.utils import TaskStatus, task_dao
 
 CELERY_ACCEPT_CONTENT = ['pickle']
 
