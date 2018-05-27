@@ -17,7 +17,7 @@ def image_resize(task_id):
     task.job_result = "Task successfully finished."
     print(f"Long running operation finished.")
     print(f"Updating task with id {task.id}...")
-    task.update_status(TaskStatus.DONE)
+    task.task_status = TaskStatus.DONE
     task_dao.update_task(task)
     print(f"Task updated.")
     return task
