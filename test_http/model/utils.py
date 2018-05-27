@@ -4,8 +4,8 @@ import pickle
 
 
 @contextmanager
-def persist(self, filename='db.json'):
-    with open(filename, 'rb+') as f:
+def persist(self, filename="db.json"):
+    with open(filename, "rb+") as f:
         self.data = pickle.load(f)
         yield
         f.seek(0)
@@ -13,14 +13,16 @@ def persist(self, filename='db.json'):
 
 
 class TaskStatus(object):
-    CREATED = 'CREATED'
-    RUNNING = 'RUNNING'
-    FAILED = 'FAILED'
-    DELETED = 'DELETED'
-    DONE = 'DONE'
+    CREATED = "CREATED"
+    RUNNING = "RUNNING"
+    FAILED = "FAILED"
+    DELETED = "DELETED"
+    DONE = "DONE"
+    statuses = [CREATED, RUNNING, FAILED, DELETED, DONE]
 
 
 class TaskDao:
+
     def __init__(self):
         self.data = {}
 
@@ -42,5 +44,6 @@ class TaskDao:
     def update_task(self, task):
         with persist(self):
             self.data[task.id] = task
+
 
 task_dao = TaskDao()
