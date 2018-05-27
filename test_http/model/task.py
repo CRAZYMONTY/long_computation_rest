@@ -20,7 +20,7 @@ class Task(object):
         self.error = error
         self.job_result = job_result
         self.job_definition = job_definition
-        self.status = status
+        self.task_status = status
         self.id = id
 
     @staticmethod
@@ -28,25 +28,22 @@ class Task(object):
         return Task(id=uuid.uuid4())
 
     def run_task(self):
-        self.status = utils.TaskStatus.RUNNING
+        self.task_status = utils.TaskStatus.RUNNING
         return worker.image_resize.delay(self.id)
 
-    def update_status(self, status):
-        self.status = status
-
     @property
-    def task_status(self):
-        return self.status
+    def status(self):
+        return self.task_status
 
-    @task_status.setter
-    def task_status(self, value):
+    @status.setter
+    def status(self, value):
         assert value in utils.TaskStatus.statuses
-        self.status = value
-        return self.status
+        self.task_status = value
+        return self.task_status
 
     def __iter__(self):
         yield "Id", str(self.id)
-        yield "Status", self.status
+        yield "Status", self.task_status
         yield "Error", self.error
         yield "JobResult", self.job_result
         yield "JobDefinition", self.job_definition

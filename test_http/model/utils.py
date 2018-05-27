@@ -1,6 +1,6 @@
-from contextlib import contextmanager
-
 import pickle
+
+from contextlib import contextmanager
 
 
 @contextmanager
