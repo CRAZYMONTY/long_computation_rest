@@ -39,7 +39,6 @@ class Task(object):
     def status(self, value):
         assert value in utils.TaskStatus.statuses
         self.task_status = value
-        return self.task_status
 
     def __iter__(self):
         yield "Id", str(self.id)

@@ -11,7 +11,6 @@ class TestTask(object):
 
         assert task.status == TaskStatus.RUNNING
 
-
     def test_update_status_incorrect(self):
         task = Task(1)
 
